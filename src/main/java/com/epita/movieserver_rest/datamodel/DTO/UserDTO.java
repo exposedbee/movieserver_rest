@@ -2,9 +2,6 @@ package com.epita.movieserver_rest.datamodel.DTO;
 
 import com.epita.movieserver_rest.datamodel.Contact;
 import com.epita.movieserver_rest.datamodel.User;
-import com.epita.movieserver_rest.repository.RoleRepository;
-import com.epita.movieserver_rest.service.RoleService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Date;
 import java.util.List;

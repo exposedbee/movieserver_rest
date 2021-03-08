@@ -1,6 +1,8 @@
 package com.epita.movieserver_rest.datamodel;
 
 
+import com.sun.istack.NotNull;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -15,7 +17,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
+    @NotNull
     private String username;
+    @NotNull
     private String password;
 
     @OneToOne

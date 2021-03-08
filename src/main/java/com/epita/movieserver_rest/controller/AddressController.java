@@ -1,9 +1,8 @@
 package com.epita.movieserver_rest.controller;
 
 import com.epita.movieserver_rest.datamodel.Address;
-import com.epita.movieserver_rest.datamodel.Contact;
-import com.epita.movieserver_rest.service.AddressService;
-import com.epita.movieserver_rest.service.ContactService;
+import com.epita.movieserver_rest.service.interfaces.AddressService;
+import com.epita.movieserver_rest.service.interfaces.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

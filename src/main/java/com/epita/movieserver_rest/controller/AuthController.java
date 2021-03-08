@@ -1,47 +1,65 @@
 package com.epita.movieserver_rest.controller;
 
-import com.epita.movieserver_rest.datamodel.User;
+import com.epita.movieserver_rest.errorHandling.ApiError;
 import com.epita.movieserver_rest.request.UserLogin;
 import com.epita.movieserver_rest.request.UserProfile;
 import com.epita.movieserver_rest.security.JWTToken;
 import com.epita.movieserver_rest.security.UserInfoFromJWT;
-import com.epita.movieserver_rest.service.UserService;
+import com.epita.movieserver_rest.service.UserAuthServices;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
-    private UserService userService;
-    private JWTToken jwtToken;
+    private UserAuthServices userAuthServices;
+    private static final Logger logger = LogManager.getLogger(AuthController.class);
+
 
     @Autowired
-    public AuthController(UserService userService){
-        this.userService = userService;
-        this.jwtToken = new JWTToken();
+    public AuthController(UserAuthServices userAuthServices) {
+        this.userAuthServices = userAuthServices;
     }
 
-    @GetMapping("/")
-    public String hello(@RequestBody UserLogin userLogin){
-        User user=userService.getUserByUsernameAndPassword(userLogin.getUsername(),userLogin.getPassword());
-//        JWTToken.createJWT(String.valueOf(user.getId()),"server",user.getUsername(),9);
-        return String.format(JWTToken.createJWT(String.valueOf(user.getId()),"server",user.getUsername(),0));
+    @PostMapping("/hello")
+    public String helloWorld(@RequestBody String userLogin){
+        logger.debug(userLogin);
+
+        return String.format("Hello World");
+    }
+
+    @PostMapping("/")
+    public ResponseEntity hello(@RequestBody UserLogin userLogin) {
+        logger.info("token request");
+
+        try {
+            //try to generate a token
+            return new ResponseEntity(userAuthServices.validateUser(userLogin), HttpStatus.OK);
+        } catch (Exception e) {
+            //if token generation fails
+            return new ResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, "username and password invalid", e), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/profile")
-    public String hello(@RequestHeader("token")String token){
-
-        UserInfoFromJWT userInfoFromJWT=JWTToken.decodeJWT(token);
-        User user= userService.verifyUser(userInfoFromJWT.getId(),userInfoFromJWT.getUsername());
-        if(user!=null)
-        {   UserProfile userProfile = new UserProfile();
-            userProfile.fromDataModel(user);
-            return  userProfile.toString();
+    public ResponseEntity hello(@RequestHeader("token") String token) {
+        logger.info("User Profile");
+        UserInfoFromJWT userInfoFromJWT = JWTToken.decodeJWT(token);
+        //Get User Details
+        if(userInfoFromJWT!=null) {
+            UserProfile userProfile = userAuthServices.getUserProfile(userInfoFromJWT.getId());
+            if (userProfile != null)
+                return new ResponseEntity(userProfile, HttpStatus.OK);
         }
-        return String.format("failed");
+        //let the user know that the token is invalid
+        return new ResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, "Token not valid"), HttpStatus.BAD_REQUEST);
+        //the control should not even reach this stage..
     }
 
 }

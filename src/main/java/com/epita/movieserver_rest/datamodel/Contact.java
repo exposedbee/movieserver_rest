@@ -1,6 +1,9 @@
 package com.epita.movieserver_rest.datamodel;
 
+import com.sun.istack.NotNull;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.xml.crypto.Data;
 import java.sql.Date;
 
@@ -12,15 +15,20 @@ public class Contact {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
+    @NotEmpty
+    @Column(name = "name", nullable = false)
     private String name;
+    @NotEmpty
     private java.sql.Date birthdate;
+    @NotNull
     private String gender;
+    @NotNull
     private String email;
 
     @OneToOne
     private Address address;
 
-    private Contact(){}
+    public Contact(){}
 
     public Contact(String name, Date birthdate, String gender, String email) {
         this.name = name;

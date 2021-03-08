@@ -1,19 +1,20 @@
-package com.epita.movieserver_rest.service;
+package com.epita.movieserver_rest.service.interfaceImp;
 
 import com.epita.movieserver_rest.datamodel.Role;
 import com.epita.movieserver_rest.repository.RoleRepository;
+import com.epita.movieserver_rest.service.interfaces.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class RoleServiceImp implements RoleService{
+public class RoleServiceImp implements RoleService {
 
     private RoleRepository roleRepository;
 
     @Autowired
-    public RoleServiceImp(RoleRepository roleRepository){
+    public RoleServiceImp(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
     }
 
@@ -24,7 +25,7 @@ public class RoleServiceImp implements RoleService{
 
     @Override
     public Role getRoleByName(String name) {
-        List<Role> res= roleRepository.findByName(name);
+        List<Role> res = roleRepository.findByName(name);
         return res.get(0);
     }
 }

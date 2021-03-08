@@ -1,6 +1,8 @@
 package com.epita.movieserver_rest.request;
 
+import com.epita.movieserver_rest.datamodel.Address;
 import com.epita.movieserver_rest.datamodel.Contact;
+import com.epita.movieserver_rest.datamodel.DTO.AddressDTO;
 import com.epita.movieserver_rest.datamodel.User;
 
 import java.util.Date;
@@ -11,8 +13,18 @@ public class UserProfile {
     private String name;
     private Date birthday;
     private String gender;
+    private AddressDTO address;
 
-    public UserProfile(){ }
+    public UserProfile() {
+    }
+
+    public AddressDTO getAddress() {
+        return address;
+    }
+
+    public void setAddress(AddressDTO addressDTO) {
+        this.address = addressDTO;
+    }
 
     public String getUsername() {
         return username;
@@ -54,13 +66,18 @@ public class UserProfile {
         this.gender = gender;
     }
 
-    public void fromDataModel(User user){
-        this.username= user.getUsername();
+    public void fromDataModel(User user) {
+        this.username = user.getUsername();
         Contact contact = user.getContact();
-        this.email=contact.getEmail();
-        this.gender=contact.getGender();
-        this.birthday=contact.getBirthdate();
-        this.name=contact.getName();
+        this.email = contact.getEmail();
+        this.gender = contact.getGender();
+        this.birthday = contact.getBirthdate();
+        this.name = contact.getName();
+        if (contact.getAddress() != null) {
+            Address address = contact.getAddress();
+            this.address= new AddressDTO();
+            this.address.fromDataModel(address);
+        }
     }
 
     @Override

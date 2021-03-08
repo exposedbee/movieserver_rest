@@ -16,7 +16,7 @@ public class Address {
     private String country;
     private String area;
     private String street;
-    private Integer number;
+    private String number;
 
     public Integer getId() {
         return id;
@@ -50,11 +50,11 @@ public class Address {
         this.street = street;
     }
 
-    public Integer getNumber() {
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(Integer number) {
+    public void setNumber(String number) {
         this.number = number;
     }
 

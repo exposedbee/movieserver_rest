@@ -52,8 +52,8 @@ public class JWTToken {
 
             return new UserInfoFromJWT(Integer.parseInt((String) claims.get("jti")), (String) claims.get("sub"));
 
-        } catch (Exception e){
+        } catch (Exception e) {
+            return null;
         }
-        return null;
     }
 }

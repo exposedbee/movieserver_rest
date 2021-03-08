@@ -1,7 +1,8 @@
-package com.epita.movieserver_rest.service;
+package com.epita.movieserver_rest.service.interfaceImp;
 
 import com.epita.movieserver_rest.datamodel.Address;
 import com.epita.movieserver_rest.repository.AddressRepository;
+import com.epita.movieserver_rest.service.interfaces.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +11,8 @@ public class AddressServiceImp implements AddressService {
 
     AddressRepository addressRepository;
 
-
     @Autowired
-    public AddressServiceImp(AddressRepository addressRepository){
+    public AddressServiceImp(AddressRepository addressRepository) {
         this.addressRepository = addressRepository;
     }
 
@@ -26,5 +26,15 @@ public class AddressServiceImp implements AddressService {
 //        System.out.println(addressRepository.findByOrderByIdDesc());
         return addressRepository.getOne(_id);
     }
+
+    @Override
+    public void updateAddress(Address address,Address newAddress) {
+        address.setStreet(newAddress.getStreet());
+        address.setNumber(newAddress.getNumber());
+        address.setArea(newAddress.getArea());
+        address.setCountry(newAddress.getCountry());
+        addressRepository.flush();
+    }
+
 
 }
