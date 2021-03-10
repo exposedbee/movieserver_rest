@@ -24,7 +24,12 @@ public class UserAuthServices {
     public String validateUser(UserLogin userLogin)throws Exception{
         User user = userService.getUserByUsernameAndPassword(userLogin.getUsername(), userLogin.getPassword());
         try {
-            return JWTToken.createJWT(String.valueOf(user.getId()), "server", user.getContact().getName(), 0);
+            String accessBuilder="";
+            for (String n:user.getRoles()
+                 ) {
+                accessBuilder=accessBuilder+n+" ";
+            }
+            return JWTToken.createJWT(String.valueOf(user.getId()), "server", user.getContact().getName(), 0,accessBuilder);
         } catch (Exception e) {
             throw new Exception("Invalid Input");
         }

@@ -10,7 +10,7 @@ public class UserDTO {
 
     private String username;
     private String password;
-    private List<String> roles;
+    private String[] roles;
     private String name;
     private Date date;
     private String gender;
@@ -64,20 +64,20 @@ public class UserDTO {
         this.password = password;
     }
 
-    public List<String> getRoles() {
+    public String[] getRoles() {
         return roles;
     }
 
-    public void setRoles(List<String> roles) {
+    public void setRoles(String[] roles) {
         this.roles = roles;
     }
-
 
     public User toDataModel(){
         User result = new User();
         result.setUsername(this.username);
         result.setPassword(this.password);
         result.setContact(new Contact(this.name,this.date,this.gender,this.email));
+        result.setRoles(this.roles);
         return result;
     }
 }

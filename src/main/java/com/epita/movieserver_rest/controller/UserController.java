@@ -22,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.util.*;
 
 
@@ -54,19 +55,20 @@ public class UserController {
             return new ResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, "Account with email already exists"), HttpStatus.BAD_REQUEST);
 
 
-        Set<Role> userRoles = new HashSet<>();
-        try {
-            for (String name : userDTO.getRoles()
-            ) {
-                Role role = roleService.getRoleByName(name.toUpperCase());
-                userRoles.add(role);
-            }
-        } catch (Exception e) {
-            return new ResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, "Roles not valid", e), HttpStatus.BAD_REQUEST);
-        }
+//        Set<Role> userRoles = new HashSet<>();
+//        try {
+//            for (String name : userDTO.getRoles()
+//            ) {
+//                Role role = roleService.getRoleByName(name.toUpperCase());
+//                userRoles.add(role);
+//            }
+//        } catch (Exception e) {
+//            return new ResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, "Roles not valid", e), HttpStatus.BAD_REQUEST);
+//        }
 
         try {
-            user.setRoles(userRoles);
+            System.out.println(user.toString());
+//            user.setRoles(userRoles);
             contactService.addContact(user.getContact());
             userService.addUser(user);
             return new ResponseEntity("User Added", HttpStatus.OK);
